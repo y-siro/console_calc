@@ -1,0 +1,272 @@
+#include <windows.h>
+#include <bits/stdc++.h>
+INPUT_RECORD rec;
+DWORD dwNOER;
+HANDLE CIN = 0;
+const int MM=20;
+
+void print_calc(){
+	printf("┌───┐	┌───┐	┌───┐	┌───┐\n");
+    printf("│ AC│	│ ＾│	│ % │	│ ÷│\n");
+    printf("└───┘	└───┘	└───┘	└───┘\n");
+    
+    printf("┌───┐	┌───┐	┌───┐	┌───┐\n");
+    printf("│ ⑦│	│ ⑧│	│ ⑨│	│ ×│\n");
+    printf("└───┘	└───┘	└───┘	└───┘\n");
+    
+    printf("┌───┐	┌───┐	┌───┐	┌───┐\n");
+    printf("│ ④│	│ ⑤│	│ ⑥│	│ －│\n");
+    printf("└───┘	└───┘	└───┘	└───┘\n");
+    
+    printf("┌───┐	┌───┐	┌───┐	┌───┐\n");
+    printf("│ ①│	│ ②│	│ ③│	│ ＋│\n");
+    printf("└───┘	└───┘	└───┘	└───┘\n");
+    
+    printf("┌───────────┐	┌───┐	┌───┐\n");
+    printf("│     ⓞ    │	│  .│	│ ＝│\n");
+    printf("└───────────┘	└───┘	└───┘\n");
+    
+    
+    
+    printf("======================================================================================\n");
+    printf("If you enter the number 0 twice, the program will exit.\n");
+	printf("Implementation capabilities: add, subtract, multiply, divide, mod operations, pow\n");
+	printf("computational scheme:compute priority without middle, posterior notation\n");
+	printf("======================================================================================\n");
+}
+
+void click(int* xx, int* yy) {
+    while (1)
+    {
+        ReadConsoleInput(GetStdHandle(STD_INPUT_HANDLE), &rec, 1, &dwNOER); 
+        if (rec.EventType == MOUSE_EVENT) {
+
+            if (rec.Event.MouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED) { 
+                int mouse_x = rec.Event.MouseEvent.dwMousePosition.X; 
+                int mouse_y = rec.Event.MouseEvent.dwMousePosition.Y; 
+
+                *xx = mouse_x; 
+                *yy = mouse_y; 
+
+                break;
+            }
+            else if (rec.Event.MouseEvent.dwButtonState & RIGHTMOST_BUTTON_PRESSED) {
+                int mouse_x = rec.Event.MouseEvent.dwMousePosition.X; 
+                int mouse_y = rec.Event.MouseEvent.dwMousePosition.Y; 
+
+                *xx = mouse_x;
+                *yy = mouse_y; 
+
+                break;
+            }
+        }
+    }
+}
+
+
+
+int main() {
+    SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), ENABLE_PROCESSED_INPUT | ENABLE_MOUSE_INPUT);
+    print_calc();
+
+    int xx, yy;
+    char str[100]="\0";
+    int cnt=0;
+    int num_stack[MM];
+   
+    
+    
+    
+    while (1) {
+        click(&xx, &yy);
+        
+        if(xx>=1 &&xx<=4 && yy>=9 && yy<=11){ // 1
+        	printf("1");
+        	strcat(str,"1");
+        }
+        else if(xx>=9 && xx<=12 && yy>=9 && yy<=11){ // 2
+        	printf("2");
+        	strcat(str,"2");
+        }
+        else if(xx>=17 && xx<=20 && yy>=9 && yy<=11){ // 3
+        	printf("3");
+        	strcat(str,"3");
+        }
+        
+        else if(xx>=1 && xx<=4 && yy>=6 && yy<=8){ // 4
+        	printf("4");
+        	strcat(str,"4");
+        }
+        else if(xx>=9 && xx<=12 && yy>=6 && yy<=8){ // 5
+        	printf("5");
+        	strcat(str,"5");
+        }
+        else if(xx>=17 && xx<=20 && yy>=6 && yy<=8){ // 6
+        	printf("6");
+        	strcat(str,"6");
+        }
+        
+        else if(xx>=1 && xx<=4 && yy>=3 && yy<=5){ // 7
+        	printf("7");
+        	strcat(str,"7");
+        }
+        else if(xx>=9 && xx<=12 && yy>=3 && yy<=5){ // 8
+        	printf("8");
+        	strcat(str,"8");
+        }
+        else if(xx>=17 && xx<=20 && yy>=3 && yy<=5){ // 9
+        	printf("9");
+        	strcat(str,"9");
+        }
+        else if(xx>=1 && xx<=12 && yy>=12 && yy<=14){ // 0
+        	printf("0");
+        	strcat(str,"0");
+        }
+        
+        else if(xx>=1 && xx<=4 && yy>=0 && yy<=2) // AC
+        {
+        	printf(" // CLEAR\n");
+        	memset(str,'\0',10*sizeof(char));
+        }
+        else if(xx>=9 && xx<=12 && yy>=0 && yy<=2) // ^
+        {
+        	printf(" ^ ");
+       		strcat(str,",^,");
+				
+        }
+        else if(xx>=17 && xx<=20 && yy>=0 && yy<=2) // %
+        {
+        	printf(" %% ");
+       		strcat(str,",%,");
+        }
+        
+        else if(xx>=25 && xx<=28 && yy>=9 && yy<=11) // +
+        {
+        	printf(" + ");
+       		strcat(str,",+,");
+        }
+        
+        else if(xx>=25 && xx<=28 && yy>=6 && yy<=8) // -
+        {
+        	printf(" - ");
+       		strcat(str,",-,");
+        }
+        
+        else if(xx>=25 && xx<=28 && yy>=3 && yy<=5) // *
+        {
+        	printf(" * ");
+       		strcat(str,",*,");
+        }
+        
+        else if(xx>=25 && xx<=28 && yy>=0 && yy<=2) // ÷
+        {
+        	printf(" / ");
+       		strcat(str,",/,");
+        }
+        
+        else if(xx>=25 && xx<=28 && yy>=12 && yy<=14){ // =
+
+			 int answer=0;
+			 char* ptr=strtok(str,",");
+			 while(ptr!=NULL){
+			 	if(*ptr==43){ // +
+			 		num_stack[cnt] = -1;
+			 		cnt++;
+			 	}
+			 	else if(*ptr==45){ // -
+			 		num_stack[cnt]=-2;
+			 		cnt++;
+			 	}
+			 	else if(*ptr==42){ // *
+			 		num_stack[cnt]=-3;
+			 		cnt++;
+			 	}
+			 	else if(*ptr==47){ // /
+			 		num_stack[cnt]=-4;
+			 		cnt++;
+			 	}
+			 	else if(*ptr==37){ // %
+			 		num_stack[cnt]=-5;
+			 		cnt++;
+			 	}
+			 	else if(*ptr==94){ // ^
+			 		num_stack[cnt]=-6;
+			 		cnt++;
+			 	}
+			 	else{ // number
+		 	 		 num_stack[cnt] = atoi(ptr);
+			 		 cnt++;
+			 	}
+			 	ptr=strtok(NULL,",");
+			 }
+			 
+			 for(int i=0;i<cnt;i++){ 
+			 	 if(num_stack[i]==0 &&num_stack[i+1]==0){
+			 	 	printf("\nExit the program.\n");
+			 	 	return 0; // 입력이 00 일시, 종료
+			 	 }
+			 	 	
+				  					 
+				 if(num_stack[i]==-3){
+			 		
+			 		num_stack[i-1]=num_stack[i-1]*num_stack[i+1];
+			 		cnt-=2;
+			 		for(int j=i;j<cnt;j++){
+			 			num_stack[j]=num_stack[j+2];
+			 		}
+			 		i--;
+			 		
+		 		}
+		 		else if(num_stack[i]==-4){
+		 			num_stack[i-1]=num_stack[i-1]/num_stack[i+1];
+		 			cnt-=2;
+		 			for(int j=i;j<i+2;j++){
+			 			num_stack[j]=num_stack[j+2];
+			 		}
+			 		i--;
+			 		
+		 		}
+		 		else if(num_stack[i]==-5){
+		 			num_stack[i-1]=num_stack[i-1]%num_stack[i+1];
+		 			cnt-=2;
+		 			for(int j=i;j<i+2;j++){
+			 			num_stack[j]=num_stack[j+2];
+			 		}
+			 		i--;
+			 		
+		 		}
+		 		else if(num_stack[i]==-6){
+		 			num_stack[i-1]=pow(num_stack[i-1],num_stack[i+1]);
+		 			cnt-=2;
+		 			for(int j=i;j<i+2;j++){
+			 			num_stack[j]=num_stack[j+2];
+			 		}
+			 		i--;
+			 		
+		 		}
+		 		
+		 	}
+		 		
+			 	
+			 
+			 
+			 for(int i=0;i<cnt;i++){
+			 	if(i==0) answer+=num_stack[i];
+			 	
+			 	if(num_stack[i]==-1) answer = answer+num_stack[i+1];
+			 	else if(num_stack[i]==-2) answer = answer-num_stack[i+1];
+			 	
+			 	
+			 }
+		
+			 
+
+			 
+			 printf(" = %d\n",answer);
+			 memset(str,'\0',100*sizeof(char));
+			 memset(num_stack,'\0',20*sizeof(int)); 
+			 cnt=0;
+		}
+    }
+}
+
